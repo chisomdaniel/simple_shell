@@ -6,7 +6,7 @@
  * Return: 0 on success
  */
 
-int main(int argc, char *argv[])
+int main()
 {
 	char *line = malloc(1), **command;
 	size_t n = 0;
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 			free(line);
 			return (EXIT_FAILURE);
 		}
-		command = split_string(line, " ");
+		command = split_string(line, " \n");
 		
 		child_pid = fork();
 		if (child_pid == 0)
@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 		else if (child_pid <= -1)
 		{
 			free(line);
+			perror("Child process error: ");
 			return (-1);
 		}
 		else

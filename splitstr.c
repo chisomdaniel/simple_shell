@@ -13,7 +13,7 @@ char **split_string(char *str, const char *deli)
 {
 	char *strclone;
 	char **strsplit, *word;
-	int word_count = 0, letter_count = 0, i = 0, j = 1;
+	int word_count = 0, letter_count = 0, i = 0, j = 0;
 
 	/* count the number of words and letters*/
 	if (str[0] != ' ')
@@ -28,21 +28,30 @@ char **split_string(char *str, const char *deli)
 
 	/* allocate space for the string copy and an array of string */
 	strclone = malloc(sizeof(char) * (letter_count + 1));
-	strsplit = malloc(sizeof(strsplit) * (word_count + 1));
+	strsplit = malloc(sizeof(char *) * (word_count + 1));
 	if (strclone == NULL || strsplit == NULL)
-		return (0);
+	{
+		perror("couldn't allocate strsplit or strclone: ");
+		return(-1);
+	}
 	strcpy(strclone, str);
 	strclone[letter_count] = '\0';
 
 	/* fill up the array of string with pointers to the string */
-	strsplit[0] = strtok(strclone, deli);
-	while (j < word_count)
+	word = strtok(strclone, deli);
+	while (word != NULL)
 	{
+		if ((strsplit[j] = malloc(sizeof(char) * strlen(word))) == NULL)
+		{
+			perror("Malloc error: token: ");
+			return(-1);
+		}
+		strcpy(strsplit[j], word);
 		word = strtok(NULL, deli);
-		strsplit[j] = word;
 		j++;
 	}
 	strsplit[word_count] = '\0';
+	free(strclone);
 	return (strsplit);
 }
 
@@ -60,9 +69,10 @@ int main()
 	while (string[i])
 	{
 		printf("%s\n", string[i]);
+		free(string[i]);
 		i++;
 	}
-
+	free(string);
 	return (0);
 }
 */
