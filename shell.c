@@ -21,13 +21,17 @@ int main()
 		if (read <= -1)
 		{
 			free(line);
+			perror("getline error: ");
 			return (EXIT_FAILURE);
 		}
 		command = split_string(line, " \n");
 		
 		child_pid = fork();
 		if (child_pid == 0)
-			execve(command[0], command, NULL);
+		{
+			if (execve(command[0], command, NULL) == -1)
+				perror("execve error: ");
+		}
 		else if (child_pid <= -1)
 		{
 			free(line);
@@ -37,8 +41,6 @@ int main()
 		else
 			wait(&status);
 	}
-
-
 	free(line);
 	return (0);
 }
