@@ -44,9 +44,9 @@ void sh_exit(char **args)
  */
 void sh_env(char **args)
 {
-	(void)args;
 	char **env = environ;
 
 	while (*env)
 		printf("%s\n", *env++);
+	(void)args;
 }
