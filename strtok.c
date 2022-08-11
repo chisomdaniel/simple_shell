@@ -11,15 +11,15 @@ char **strtoarg(char *str);
  */
 size_t wordCount(char *str)
 {
-  size_t count = 0, i = 0;
+	size_t count = 0, i = 0;
 
-  while (str[i++])
-    {
-      if (str[i] == ' ' && str[i + 1] != ' ')
-	count++;
-    }
+	while (str[i++])
+	{
+		if (str[i] == ' ' && str[i + 1] != ' ')
+			count++;
+	}
 
-  return (count + 1);
+	return (count + 1);
 }
 
 /**
@@ -30,31 +30,32 @@ size_t wordCount(char *str)
  */
 char **strtoarg(char *str)
 {
-  size_t count;
-  char *token, **args, *cpy;
+	size_t count;
+	char *token, **args, *cpy;
 
-  cpy = malloc(sizeof(char) * _strlen(str));
-  if (cpy == NULL)
-    {
-      printf("Cannot allocate memory\n");
-    }
-  _strcpy(cpy, str);
-  
-  count = wordCount(str);
-  args = malloc(sizeof(char *) * (count + 1));
-  if (args == NULL)
-    printf("Cannot allocate memory.\n");
+	cpy = malloc(sizeof(char) * _strlen(str));
+	if (cpy == NULL)
+	{
+		printf("Cannot allocate memory\n");
+	}
+	_strcpy(cpy, str);
 
-  token = strtok(cpy, " \n");
-  count = 0;
-  while (token != NULL)
-    {
-      args[count] = malloc(sizeof(char) * _strlen(token));
-      _strcpy(args[count], token);
-      count++;
-      token = strtok(NULL, " \n");
-    }
-  args[count] = NULL;
+	count = wordCount(str);
+	args = malloc(sizeof(char *) * (count + 1));
+	if (args == NULL)
+		printf("Cannot allocate memory.\n");
 
-  return (args);
+	token = strtok(cpy, " \n");
+	count = 0;
+	while (token != NULL)
+	{
+		args[count] = malloc(sizeof(char) * _strlen(token));
+		_strcpy(args[count], token);
+		count++;
+		token = strtok(NULL, " \n");
+	}
+	args[count] = NULL;
+
+	free(cpy);
+	return (args);
 }

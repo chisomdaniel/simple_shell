@@ -11,26 +11,45 @@ int is_path(char *str);
  */
 char *get_path(char *str)
 {
-  char *path_list, *token, *buffer;
-  struct stat st;
-  
-  path_list = _getenv("PATH");
+	char *copy_path, *path_list, *token, *buffer;
+	struct stat st;
 
-  token = strtok(path_list, ":");
-  while (token != NULL)
-    {
-      buffer = malloc(sizeof(char) * (_strlen(token) + _strlen(str) + 2));
-      if (buffer == NULL)
-	perror("Can't allocate buffer");
-      _strcpy(buffer, token);
-      _strcat(buffer, "/");
-      _strcat(buffer, str);
-      if (stat(buffer, &st) == 0)
+	if (is_path(str))
 	{
-	  return (buffer);
+		if (stat(str, &st) == 0)
+			return (str);
 	}
-      token = strtok(NULL, ":");
-    }
+
+	path_list = _getenv("PATH");
+	if (path_list != NULL)
+	{
+		copy_path = _strdup(path_list);
+		token = strtok(copy_path, ":");
+		while (token != NULL)
+		{
+			buffer = malloc(sizeof(char) * (_strlen(token) + _strlen(str) + 2));
+			if (buffer == NULL)
+				printf("Can't allocate buffer");
+			_strcpy(buffer, token);
+			_strcat(buffer, "/");
+			_strcat(buffer, str);
+			_strcat(buffer, "\0");
+
+			if (stat(buffer, &st) == 0)
+			{
+				free(copy_path);
+				return (buffer);
+			}
+			free(buffer);
+			token = strtok(NULL, ":");
+		}
+
+		free(copy_path);
+		if (stat(str, &st) == 0)
+			return (str);
+		return (NULL);
+	}
+	return (NULL);
 }
 
 /**
@@ -42,21 +61,21 @@ char *get_path(char *str)
  */
 int is_path(char *str)
 {
-  int i = 0, status;
+	int i = 0, status;
 
-  while (str[i] != '\0')
-    {
-      if (str[i] == '/')
+	while (str[i] != '\0')
 	{
-	  status = 1;
-	  break;
+		if (str[i] == '/')
+		{
+			status = 1;
+			break;
+		}
+		else
+		{
+			status = 0;
+			break;
+		}
+		i++;
 	}
-      else
-	{
-	  status = 0;
-	  break;
-	}
-      i++;
-    }
-  return (status);
+	return (status);
 }

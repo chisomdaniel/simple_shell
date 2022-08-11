@@ -15,13 +15,13 @@ int _strcmp(char *s1, char *s2);
  */
 int _strcmp(char *s1, char *s2)
 {
-  int i;
+	int i;
 
-  for (i = 0; s1[i] == s2[i]; i++)
-    if (s1[i] == '\0')
-      return (0);
-  
-  return (s1[i] - s2[i]);
+	for (i = 0; s1[i] == s2[i]; i++)
+		if (s1[i] == '\0')
+			return (0);
+
+	return (s1[i] - s2[i]);
 }
 
 /**
@@ -34,14 +34,14 @@ int _strcmp(char *s1, char *s2)
  */
 char *_strncat(char *dest, char *src, int n)
 {
-  int i = 0, len = 0;
+	int i = 0, len = 0;
 
-  while (dest[i++])
-    len++;
-  for (i = 0; src[i] && i < n; i++)
-    dest[len++] = src[i];
+	while (dest[i++])
+		len++;
+	for (i = 0; src[i] && i < n; i++)
+		dest[len++] = src[i];
 
-  return (dest);
+	return (dest);
 }
 
 /**
@@ -53,15 +53,15 @@ char *_strncat(char *dest, char *src, int n)
  */
 char *_strcat(char *dest, char *src)
 {
-  int i = 0, len_dest = 0;
+	int i = 0, len_dest = 0;
 
-  for (i = 0; dest[i] != '\0'; i++)
-    len_dest++;
+	for (i = 0; dest[i] != '\0'; i++)
+		len_dest++;
 
-  for (i = 0; src[i]; i++)
-    dest[len_dest++] = src[i];
+	for (i = 0; src[i]; i++)
+		dest[len_dest++] = src[i];
 
-  return (dest);
+	return (dest);
 }
 
 /**
@@ -72,14 +72,14 @@ char *_strcat(char *dest, char *src)
  */
 int _strlen(char *str)
 {
-  size_t len = 0;
+	size_t len = 0;
 
-  while (*str++)
-    len++;
+	while (*str++)
+		len++;
 
-  return (len);
+	return (len);
 }
- 
+
 /**
  *_strcpy - copies a string from src to another string dest
  *@dest: pointer to string being copied to
@@ -89,9 +89,9 @@ int _strlen(char *str)
  */
 char *_strcpy(char *dest, char *src)
 {
-  int i = 0;
+	int i = 0;
 
-  while ((dest[i] = src[i]) != '\0')
-    i++;
-  return (dest);
+	while ((dest[i] = src[i]) != '\0')
+		i++;
+	return (dest);
 }
