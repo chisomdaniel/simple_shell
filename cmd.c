@@ -1,9 +1,14 @@
 #include "shell.h"
 
+/**
+ *main - Runs a simple LINUX shell interpreter
+ *
+ *Return: exit status
+ */
 int main(void)
 {
 	char **argv, *buffer = NULL;
-     	size_t buffsize = 0;
+	size_t buffsize = 0;
 	int len, stat = 0;
 
 	while (1)
