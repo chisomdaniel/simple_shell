@@ -6,9 +6,9 @@
  * Return: 0 on success
  */
 
-int main()
+int main(int argc, char **argv, char *env[])
 {
-	char *line = malloc(1), **command;
+	char *line = malloc(1), **command, *path;
 	size_t n = 0;
 	int read = 0, status, i = 0;
 	pid_t child_pid;
@@ -21,21 +21,23 @@ int main()
 		if (read <= -1)
 		{
 			free(line);
-			perror("getline error: ");
-			return (EXIT_FAILURE);
+			return (0);
 		}
 		command = split_string(line, " \n");
+		if ((path = checkpath(command[0])) == NULL)
+			continue;
+		command[0] = path;
 		
 		child_pid = fork();
 		if (child_pid == 0)
 		{
-			if (execve(command[0], command, NULL) == -1)
-				perror("execve error: ");
+			if (execve(command[0], command, env) == -1)
+				perror("execve error");
 		}
 		else if (child_pid <= -1)
 		{
 			free(line);
-			perror("Child process error: ");
+			perror("Child process error");
 			return (-1);
 		}
 		else
@@ -45,23 +47,4 @@ int main()
 	return (0);
 }
 
-/*
-int file_status(char *file)
-{
-	struct stat st;
-	int rtn;
 
-	rtn = stat(file, &st);
-	if (rtn == 0)
-	{
-		return (0);
-	}
-	else
-	{
-
-	}
-
-
-	return
-}
-*/

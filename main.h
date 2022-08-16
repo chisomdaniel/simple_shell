@@ -12,6 +12,9 @@
 #include <fcntl.h>
 
 char **split_string(char *str, const char *deli);
+char *_getenv(const char *name);
+char **getpath();
+char *checkpath(char *str);
 
 
 #endif

@@ -13,51 +13,54 @@ char **split_string(char *str, const char *deli)
 {
 	char *strclone;
 	char **strsplit, *word;
-	int word_count = 0, letter_count = 0, i = 0, j = 0;
+	int word_count = 0, letter_count = 0, i = 0, j = 0, k = 0;
 
-	/* count the number of words and letters*/
-	if (str[0] != deli[0]) /* changed this from ' ' to deli[0] */
+
+	if (str[0] != deli[0])
 		word_count++;
 	while (str[i] != '\0')
 	{
-		if (str[i] == deli[0] && str[i + 1] != deli[0]) /* changed ' ' */
+		if (str[i] == deli[0] && str[i + 1] != deli[0])
 			word_count++;
 		letter_count++;
 		i++;
 	}
+	printf("words: %i\nletters: %i\n", word_count, letter_count);
 
 	/* allocate space for the string copy and an array of string */
 	strclone = malloc(sizeof(char) * (letter_count + 1));
 	strsplit = malloc(sizeof(char *) * (word_count + 1));
 	if (strclone == NULL || strsplit == NULL)
 	{
-		perror("couldn't allocate strsplit or strclone: ");
-		exit(-1);
+		perror("malloc failed");
+		return (NULL);
 	}
+	printf("malloc success\n");
 	strcpy(strclone, str);
-	strclone[letter_count] = '\0';
 
-	/* fill up the array of string with pointers to the string */
-	word = strtok(strclone, deli);
-	while (word != NULL)
+	while (strclone[j] != '\0')
 	{
-		if ((strsplit[j] = malloc(sizeof(char) * strlen(word))) == NULL)
+		if (strclone[0] != deli[0])
 		{
-			perror("Malloc error: token: ");
-			exit(-1);
+			strsplit[k] = strclone;
+			k++;
+			printf("%s\n", strsplit[0]);
 		}
-		strcpy(strsplit[j], word);
-		word = strtok(NULL, deli);
+		if (strclone[j] == deli[0] && strclone[j + 1] != deli[0])
+		{
+			strclone[j] = '\0';
+			strsplit[k] = strclone + (j + 1);
+			k++;
+			printf("%s\n", strsplit[k]);
+		}
 		j++;
 	}
-	strsplit[word_count] = '\0';
-	free(strclone);
 	return (strsplit);
 }
 
 
 /* Testing the function */
-/*
+
 int main()
 {
 	char **string;
@@ -69,10 +72,10 @@ int main()
 	while (string[i])
 	{
 		printf("%s\n", string[i]);
-		free(string[i]);
+		//free(string[i]);
 		i++;
 	}
-	free(string);
+	//free(string);
 	return (0);
 }
-*/
+
