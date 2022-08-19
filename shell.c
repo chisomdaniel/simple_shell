@@ -12,15 +12,15 @@
 
 int main(int argc, char **argv, char *env[])
 {
-	(void)argc;
-	char *line = malloc(1), **command, *path;
+	char *line, **command, *path;
 	size_t n = 0;
 	int read = 0, status;
 	pid_t child_pid;
+	(void)argc;
 
 	while (read >= 0)
 	{
-		printf("simple_shell ($)-> ");
+		printf("($)-> ");
 		read = getline(&line, &n, stdin);
 		if (read <= -1)
 		{
