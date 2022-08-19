@@ -2,6 +2,7 @@
 
 /**
  * split_string - a function that separates words in a string
+ *		This uses the strtok function
  *
  * @str: a pointer the string
  * @deli: the string delimeter
@@ -55,24 +56,37 @@ char **split_string(char *str, const char *deli)
 	return (strsplit);
 }
 
+void freestr(char **str)
+{
+	int i = 0;
+
+	if (str == NULL)
+		return;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
 
 /* Testing the function */
-/*
+
 int main()
 {
 	char **string;
 	int i = 0;
 
 
-	string = split_string("Hello World of thurnder", " ");
+	string = split_string("Hello world of thunder!", " ");
 
 	while (string[i])
 	{
 		printf("%s\n", string[i]);
-		free(string[i]);
 		i++;
 	}
-	free(string);
+	freestr(string);
 	return (0);
 }
-*/
+

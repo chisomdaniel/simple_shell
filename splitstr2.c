@@ -1,5 +1,30 @@
 #include "main.h"
 
+#undef TEST_MODE
+
+/**
+ * wordcount - count the number of words in a string
+ *
+ * @str: the string
+ * @deli: the separation character
+ *
+ * Return: an int which is the number of words
+ */
+
+int wordcount(char *str, const char *deli)
+{
+	int word_count = 0, i;
+
+	if (str[0] != deli[0] && str[0] != '\0')
+		word_count++;
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (str[i] == deli[0] && str[i + 1] != deli[0])
+			word_count++;
+	}
+	return (word_count);
+}
+
 /**
  * split_string - a function that separates words in a string
  *
@@ -11,21 +36,13 @@
 
 char **split_string(char *str, const char *deli)
 {
-	char *strclone;
-	char **strsplit, *word;
-	int word_count = 0, letter_count = 0, i = 0, j = 0, k = 0;
+	char *strclone, **strsplit;
+	int word_count, letter_count = 0, i = 0, m = 0;
 
-
-	if (str[0] != deli[0])
-		word_count++;
-	while (str[i] != '\0')
-	{
-		if (str[i] == deli[0] && str[i + 1] != deli[0])
-			word_count++;
-		letter_count++;
-		i++;
-	}
-	printf("words: %i\nletters: %i\n", word_count, letter_count);
+	if (str == NULL)
+		return (NULL);
+	word_count = wordcount(str, deli);
+	letter_count = _strlen(str);
 
 	/* allocate space for the string copy and an array of string */
 	strclone = malloc(sizeof(char) * (letter_count + 1));
@@ -35,47 +52,77 @@ char **split_string(char *str, const char *deli)
 		perror("malloc failed");
 		return (NULL);
 	}
-	printf("malloc success\n");
-	strcpy(strclone, str);
+	_strcpy(strclone, str);
 
-	while (strclone[j] != '\0')
+	for (i = 0; strclone[i] != '\0'; i++)
 	{
-		if (strclone[0] != deli[0])
+		if (strclone[i] == deli[0] || strclone[i] == '\n')
 		{
-			strsplit[k] = strclone;
-			k++;
-			printf("%s\n", strsplit[0]);
+			strclone[i] = '\0';
 		}
-		if (strclone[j] == deli[0] && strclone[j + 1] != deli[0])
-		{
-			strclone[j] = '\0';
-			strsplit[k] = strclone + (j + 1);
-			k++;
-			printf("%s\n", strsplit[k]);
-		}
-		j++;
 	}
+	for (i = 0; i < letter_count; i++) /* changed from i < word_count */
+	{
+		if (strclone[i] != '\0' && (strclone[i - 1] == '\0' || i == 0))
+		{
+			strsplit[m] = malloc(sizeof(char) * (_strlen(strclone + i) + 1));
+			_strcpy(strsplit[m], strclone + i);
+			m++;
+		}
+	}
+	strsplit[word_count] = '\0';
+	free(strclone);
 	return (strsplit);
 }
 
+/**
+ * freestr - a function that frees the pointers created by the function above
+ *
+ * @str: the pointers to be freed
+ *
+ * Return: Nothing
+ */
 
-/* Testing the function */
+void freestr(char **str)
+{
+	int i = 0;
 
-int main()
+	if (str == NULL)
+		return;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+
+#ifdef TEST_MODE
+
+/**
+ * main - define TEST_mode if you want to test
+ *	how the function above work
+ *
+ * @argc: number of arguments passed
+ * @argv: pointer to an array of arguments passed
+ *
+ * Return: 0 on success
+ */
+
+int main(int argc, char **argv)
 {
 	char **string;
 	int i = 0;
 
-
-	string = split_string("Hello World of thurnder", " ");
+	string = split_string(argv[1], argv[2]);
 
 	while (string[i])
 	{
 		printf("%s\n", string[i]);
-		//free(string[i]);
 		i++;
 	}
-	//free(string);
+	freestr(string);
 	return (0);
 }
-
+#endif
